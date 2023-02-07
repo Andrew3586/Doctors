@@ -20,19 +20,23 @@ const AddAppointmentsForm = () => {
 
   return (
     <>
-      <form onSubmit={formSubmitHandler}>
-        <label htmlFor="appointmentdate">Appointment Date</label>
-        <input
-          type="date"
-          id="appointmentdate"
-          min="2022-01-31"
-          max="2023-01-31"
-          onChange={aDateHandler}
-          value={aDate}
-          required
-        />
+      <form onSubmit={formSubmitHandler} className="flex flex-col items-center py-10">
+        <label htmlFor="appointmentdate"><div className="py-8 font-bold text-2xl"><h1>Add Appointment</h1></div>
+          <div className="flex justify-center py-6" >Appointment Date</div></label>
+        <div className="border-2 border-width: 4px ">
 
-        <label htmlFor="appointmentfees">Appointment Fees</label>
+          <input
+            type="date"
+            id="appointmentdate"
+            min="2022-01-31"
+            max="2023-01-31"
+            onChange={aDateHandler}
+            value={aDate}
+            required
+          />
+        </div>
+
+        <label htmlFor="appointmentfees"><div className="py-8">Appointment Fees</div></label>
         <input
           type="text"
           id="appointmentfees"
@@ -43,7 +47,7 @@ const AddAppointmentsForm = () => {
           required
         />
 
-        <label htmlFor="appointmentreason">Appointment Reason</label>
+        <label htmlFor="appointmentreason"><div className="py-8">Appointment Reason</div></label>
         <input
           type="text"
           id="appointmentreason"
@@ -54,7 +58,7 @@ const AddAppointmentsForm = () => {
           required
         />
 
-        <label htmlFor="doctorsname">Doctors Name</label>
+        <label htmlFor="doctorsname"><div className="py-6">Appointment Doctors Name</div></label>
         <select
           name="doctorsname"
           id="doctorsname"
@@ -71,8 +75,11 @@ const AddAppointmentsForm = () => {
           <option value="opel">Opel</option>
           <option value="audi">Audi</option>
         </select>
-
-        <input type="submit" value="Add Appointment" />
+        <div className="py-60">
+          <div className="text-white cursor-pointer hover:bg-[hsl(231,25%,26%)] p-4 bg-[#243e8e] rounded duration-300">
+            <input type="submit" value="Add Appointment" />
+          </div>
+        </div>
       </form>
     </>
   );
