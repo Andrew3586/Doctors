@@ -19,12 +19,16 @@ const AddAppointmentsForm = () => {
   };
 
   return (
-    <>
-      <form onSubmit={formSubmitHandler} className="flex flex-col items-center py-10">
-        <label htmlFor="appointmentdate"><div className="py-8 font-bold text-2xl"><h1>Add Appointment</h1></div>
-          <div className="flex justify-center py-6" >Appointment Date</div></label>
-        <div className="border-2 border-width: 4px ">
-
+    <div className="flex flex-col h-screen items-center gap-6">
+      <h1 className="text-4xl font-bold m-4">Add Appointment</h1>
+      <form onSubmit={formSubmitHandler} className="grid gap-6 mb-6 w-[40%]">
+        <div>
+          <label
+            htmlFor="appointmentdate"
+            className="block mb-2 text-md font-medium"
+          >
+            Appointment Date
+          </label>
           <input
             type="date"
             id="appointmentdate"
@@ -33,55 +37,83 @@ const AddAppointmentsForm = () => {
             onChange={aDateHandler}
             value={aDate}
             required
+            className="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5"
           />
         </div>
 
-        <label htmlFor="appointmentfees"><div className="py-8">Appointment Fees</div></label>
-        <input
-          type="text"
-          id="appointmentfees"
-          onChange={(e) => {
-            setAFees(e.target.value);
-          }}
-          value={aFees}
-          required
-        />
+        <div>
+          <label
+            htmlFor="appointmentfees"
+            className="block mb-2 text-md font-medium"
+          >
+            Appointment Fees
+          </label>
+          <input
+            type="text"
+            id="appointmentfees"
+            onChange={(e) => {
+              setAFees(e.target.value);
+            }}
+            value={aFees}
+            required
+            className="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5"
+          />
+        </div>
 
-        <label htmlFor="appointmentreason"><div className="py-8">Appointment Reason</div></label>
-        <input
-          type="text"
-          id="appointmentreason"
-          onChange={(e) => {
-            setAReason(e.target.value);
-          }}
-          value={aReason}
-          required
-        />
+        <div>
+          <label
+            htmlFor="appointmentreason"
+            className="block mb-2 text-md font-medium"
+          >
+            Appointment Reason
+          </label>
+          <input
+            type="text"
+            id="appointmentreason"
+            onChange={(e) => {
+              setAReason(e.target.value);
+            }}
+            value={aReason}
+            required
+            className="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5"
+          />
+        </div>
 
-        <label htmlFor="doctorsname"><div className="py-6">Appointment Doctors Name</div></label>
-        <select
-          name="doctorsname"
-          id="doctorsname"
-          onChange={(e) => {
-            setADoctorsName(e.target.value);
-          }}
-          required
-        >
-          <option disabled selected>
-            Select Doctor
-          </option>
-          <option value="Dr James Cross">Dr James Cross</option>
-          <option value="Dr Peter Day">Dr Peter Day</option>
-          <option value="opel">Opel</option>
-          <option value="audi">Audi</option>
-        </select>
-        <div className="py-60">
-          <div className="text-white cursor-pointer hover:bg-[hsl(231,25%,26%)] p-4 bg-[#243e8e] rounded duration-300">
-            <input type="submit" value="Add Appointment" />
-          </div>
+        <div >
+          <label
+            htmlFor="doctorsname"
+            className="block mb-2 text-md font-medium"
+          >
+            Appointment Doctor's Name
+          </label>
+          <select
+            name="doctorsname"
+            id="doctorsname"
+            onChange={(e) => {
+              setADoctorsName(e.target.value);
+            }}
+            required
+            className="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5"
+          >
+            <option disabled selected>
+              Select Doctor
+            </option>
+            <option value="Dr James Cross">Dr James Cross</option>
+            <option value="Dr Peter Day">Dr Peter Day</option>
+            <option value="opel">Opel</option>
+            <option value="audi">Audi</option>
+          </select>
+        </div>
+
+        <div className="lg:absolute lg:bottom-[30%]">
+          <input
+            type="submit"
+            value="Submit"
+            className="text-white cursor-pointer hover:bg-[hsl(231,25%,26%)] p-4 bg-[#243e8e] rounded duration-300"
+          />
         </div>
       </form>
-    </>
+    </div>
   );
 };
 
