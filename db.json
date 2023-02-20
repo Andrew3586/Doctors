@@ -1,0 +1,51 @@
+{
+  "doctors": [
+    {
+      "id": 0.33312969353074173,
+      "name": "Dr Peter Allen"
+    },
+    {
+      "id": 0.8011954733502333,
+      "name": "Dr Peter Brock"
+    },
+    {
+      "id": 0.2763596926425913,
+      "name": "Dr Lisa Heal"
+    },
+    {
+      "id": 0.5125190294989139,
+      "name": "Dr Frankenstein Heckle"
+    },
+    {
+      "id": 0.5411463984559477,
+      "name": "Dr Mil Hole"
+    },
+    {
+      "id": 0.623857406368431,
+      "name": "Dr Mile High"
+    }
+  ],
+  "appointments": [
+    {
+      "id": 0.21413515484211465,
+      "appointmentDate": "2022-12-07",
+      "appointmentFees": "102.00",
+      "appointmentReason": "Headache",
+      "appointmentDoctor": "Dr James Cross"
+    },
+    {
+      "id": 0.6386498033564105,
+      "appointmentDate": "2022-05-25",
+      "appointmentFees": "55",
+      "appointmentReason": "headache",
+      "appointmentDoctor": "Dr Peter Day"
+    },
+    {
+      "id": 0.6494374416043607,
+      "appointmentDate": "2022-06-24",
+      "appointmentFees": "$100",
+      "appointmentReason": "Broken Leg",
+      "appointmentDoctor": "Dr Leo Forman"
+    }
+  ]
+}

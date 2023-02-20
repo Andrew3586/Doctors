@@ -1,22 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AddAppointmentsForm = () => {
+  let navigate = useNavigate();
   const [aDate, setADate] = useState("");
-  const [aFees, setAFees] = useState("");
   const [aReason, setAReason] = useState("");
   const [aDoctorsName, setADoctorsName] = useState("");
+  const [doctorData, setDoctorData] = useState([]);
 
   const aDateHandler = (event) => {
     setADate(event.target.value);
   };
 
-  const formSubmitHandler = (event) => {
-    event.preventDefault();
-    // setaDate("");
-    // setaFees("");
-    // setaReason("");
-    // setaDoctorsName("");
+  const formSubmitHandler = async (event) => {
+    try {
+      event.preventDefault();
+      const appointmentData = {
+        id: Math.random(),
+        appointmentDate: aDate,
+        appointmentFees: "$100.00",
+        appointmentReason: aReason,
+        appointmentDoctor: aDoctorsName,
+      };
+      const response = await axios.post(
+        "http://localhost:3000/appointments",
+        appointmentData
+      );
+      if (response) {
+        setADate("");
+        setAReason("");
+        setADoctorsName("");
+        navigate("/appointments");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/doctors")
+      .then((data) => {
+        console.log(data.data);
+        setDoctorData(data.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   return (
     <div className="flex flex-col h-screen items-center gap-6">
@@ -51,12 +83,10 @@ const AddAppointmentsForm = () => {
           <input
             type="text"
             id="appointmentfees"
-            onChange={(e) => {
-              setAFees(e.target.value);
-            }}
-            value={aFees}
             required
             className="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5"
+            defaultValue="$100.00"
+            disabled
           />
         </div>
 
@@ -79,7 +109,7 @@ const AddAppointmentsForm = () => {
           />
         </div>
 
-        <div >
+        <div>
           <label
             htmlFor="doctorsname"
             className="block mb-2 text-md font-medium"
@@ -94,14 +124,19 @@ const AddAppointmentsForm = () => {
             }}
             required
             className="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5"
+            defaultValue={'DEFAULT'}
           >
-            <option disabled selected>
+            <option disabled value="DEFAULT">
               Select Doctor
             </option>
-            <option value="Dr James Cross">Dr James Cross</option>
-            <option value="Dr Peter Day">Dr Peter Day</option>
-            <option value="opel">Opel</option>
-            <option value="audi">Audi</option>
+            {doctorData.length > 0 &&
+              doctorData.map((el, index) => {
+                return (
+                  <option value={el.name} key={el.id}>
+                    {el.name}
+                  </option>
+                );
+              })}
           </select>
         </div>
 

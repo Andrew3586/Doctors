@@ -1,16 +1,32 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const AddDoctorsForm = () => {
+  let navigate = useNavigate();
+
   const [aDoctorsName, setaDoctorsName] = useState("");
 
   const aDoctorsNameHandler = (event) => {
     setaDoctorsName(event.target.value);
   };
 
-  const formSubmitHandler = (event) => {
-    event.preventDefault();
-    setaDoctorsName("");
+  const formSubmitHandler = async (event) => {
+   try {
+      event.preventDefault();
+      const doctor = { id: Math.random(), name: aDoctorsName };
+      const response = await axios.post(
+        "http://localhost:3000/doctors",
+        doctor
+      );
+      console.log(response);
+      if (response) {
+        setaDoctorsName("");
+        navigate("/doctors");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
