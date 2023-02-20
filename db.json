@@ -34,18 +34,18 @@
       "appointmentDoctor": "Dr James Cross"
     },
     {
-      "id": 0.6386498033564105,
-      "appointmentDate": "2022-05-25",
-      "appointmentFees": "55",
-      "appointmentReason": "headache",
-      "appointmentDoctor": "Dr Peter Day"
-    },
-    {
       "id": 0.6494374416043607,
       "appointmentDate": "2022-06-24",
       "appointmentFees": "$100",
       "appointmentReason": "Broken Leg",
       "appointmentDoctor": "Dr Leo Forman"
+    },
+    {
+      "id": 0.972838584246025,
+      "appointmentDate": "2022-04-01",
+      "appointmentFees": "$100.00",
+      "appointmentReason": "Brain Hemeridge",
+      "appointmentDoctor": "Dr Frankenstein Heckle"
     }
   ]
 }
