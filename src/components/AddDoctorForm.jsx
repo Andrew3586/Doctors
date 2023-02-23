@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { db } from "../Firebase/config";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 const AddDoctorsForm = () => {
   let navigate = useNavigate();
@@ -12,14 +13,12 @@ const AddDoctorsForm = () => {
   };
 
   const formSubmitHandler = async (event) => {
-   try {
+    try {
       event.preventDefault();
-      const doctor = { id: Math.random(), name: aDoctorsName };
-      const response = await axios.post(
-        "http://localhost:3000/doctors",
-        doctor
-      );
-      console.log(response);
+      const response=await addDoc(collection(db, "doctors"), {
+        name: aDoctorsName,
+        created: Timestamp.now(),
+      });
       if (response) {
         setaDoctorsName("");
         navigate("/doctors");

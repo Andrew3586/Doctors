@@ -1,44 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { MdOutlineDelete } from "react-icons/md";
-import axios from "axios";
+import {
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
+import { db } from "../Firebase/config";
 
 const DoctorsList = () => {
   const [doctorData, setDoctorData] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/doctors")
-      .then((data) => {
-        console.log(data.data);
-        setDoctorData(data.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    const q = query(collection(db, "doctors"), orderBy("created", "desc"));
+    onSnapshot(q, (querySnapshot) => {
+      setDoctorData(
+        querySnapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            data: doc.data(),
+          };
+        })
+      );
+    });
   }, []);
 
-  const handleDelete = (event, id) => {
-    event.preventDefault();
-    console.log(id);
-    axios
-      .delete(`http://localhost:3000/doctors/${id}`)
-      .then((data) => {
-        console.log(data);
-        if (data.status === 200) {
-          axios
-            .get("http://localhost:3000/doctors")
-            .then((data) => {
-              console.log(data.data);
-              setDoctorData(data.data);
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  const handleDelete = async (event, id) => {
+    try {
+      event.preventDefault();
+      const taskDocRef = doc(db, "doctors", id);
+      await deleteDoc(taskDocRef);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -57,7 +53,9 @@ const DoctorsList = () => {
             {doctorData.map((object, index) => {
               return (
                 <tr className="border-solid border-2" key={index}>
-                  <td className="p-2 border-solid border-2">{object.name}</td>
+                  <td className="p-2 border-solid border-2">
+                    {object.data.name}
+                  </td>
                   <td className="p-2 border-solid border-2">
                     <button
                       className="m-2"

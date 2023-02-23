@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { db } from "../Firebase/config";
+import {
+  collection,
+  addDoc,
+  Timestamp,
+  query,
+  onSnapshot,
+  orderBy,
+} from "firebase/firestore";
 
 const AddAppointmentsForm = () => {
   let navigate = useNavigate();
@@ -16,17 +24,13 @@ const AddAppointmentsForm = () => {
   const formSubmitHandler = async (event) => {
     try {
       event.preventDefault();
-      const appointmentData = {
-        id: Math.random(),
+      const response = await addDoc(collection(db, "appointments"), {
         appointmentDate: aDate,
         appointmentFees: "$100.00",
         appointmentReason: aReason,
         appointmentDoctor: aDoctorsName,
-      };
-      const response = await axios.post(
-        "http://localhost:3000/appointments",
-        appointmentData
-      );
+        created: Timestamp.now(),
+      });
       if (response) {
         setADate("");
         setAReason("");
@@ -39,15 +43,17 @@ const AddAppointmentsForm = () => {
   };
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/doctors")
-      .then((data) => {
-        console.log(data.data);
-        setDoctorData(data.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    const q = query(collection(db, "doctors"), orderBy("created", "desc"));
+    onSnapshot(q, (querySnapshot) => {
+      setDoctorData(
+        querySnapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            data: doc.data(),
+          };
+        })
+      );
+    });
   }, []);
 
   return (
@@ -124,7 +130,7 @@ const AddAppointmentsForm = () => {
             }}
             required
             className="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5"
-            defaultValue={'DEFAULT'}
+            defaultValue={"DEFAULT"}
           >
             <option disabled value="DEFAULT">
               Select Doctor
@@ -132,8 +138,8 @@ const AddAppointmentsForm = () => {
             {doctorData.length > 0 &&
               doctorData.map((el, index) => {
                 return (
-                  <option value={el.name} key={el.id}>
-                    {el.name}
+                  <option value={el.data.name} key={el.id}>
+                    {el.data.name}
                   </option>
                 );
               })}

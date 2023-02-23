@@ -1,44 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { MdOutlineDelete } from "react-icons/md";
-import axios from "axios";
+import { db } from "../Firebase/config";
+import {
+  collection,
+  query,
+  onSnapshot,
+  orderBy,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 
 const AppointmentsTable = () => {
   const [appointmentsData, setAppointmentsData] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/appointments")
-      .then((data) => {
-        console.log(data.data);
-        setAppointmentsData(data.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    const q = query(collection(db, "appointments"), orderBy("created", "desc"));
+    onSnapshot(q, (querySnapshot) => {
+      setAppointmentsData(
+        querySnapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            data: doc.data(),
+          };
+        })
+      );
+    });
   }, []);
 
-  const handleDelete = (event, id) => {
-    event.preventDefault();
-    console.log(id);
-    axios
-      .delete(`http://localhost:3000/appointments/${id}`)
-      .then((data) => {
-        console.log(data);
-        if (data.status === 200) {
-          axios
-            .get("http://localhost:3000/appointments")
-            .then((data) => {
-              console.log(data.data);
-              setAppointmentsData(data.data);
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  const handleDelete = async (event, id) => {
+    try {
+      event.preventDefault();
+      const taskAppRef = doc(db, "appointments", id);
+      await deleteDoc(taskAppRef);
+    } catch (err) {
+      console.error(err);
+    }
   };
   return (
     <div className="flex flex-col gap-12 items-center">
@@ -66,22 +62,22 @@ const AppointmentsTable = () => {
               return (
                 <tr className="border-solid border-2" key={el.id}>
                   <td className="p-2 border-solid border-2">
-                    {el.appointmentDate}
+                    {el.data.appointmentDate}
                   </td>
                   <td className="p-2 border-solid border-2">
-                    {el.appointmentDoctor}
+                    {el.data.appointmentDoctor}
                   </td>
                   <td className="p-2 border-solid border-2">
-                    {el.appointmentReason}
+                    {el.data.appointmentReason}
                   </td>
                   <td className="p-2 border-solid border-2">
-                    {el.appointmentFees}
+                    {el.data.appointmentFees}
                   </td>
                   <td className="p-2 border-solid border-2">
                     <button
                       className="m-2"
                       onClick={(event) => {
-                        handleDelete(event,el.id);
+                        handleDelete(event, el.id);
                       }}
                     >
                       <MdOutlineDelete className="hover:text-red-500 duration-300" />
